@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import {
+  Routes,
+  Route,
+} from 'react-router-dom';
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
+import NotFound from './pages/NotFound';
+import Nav from './components/Nav';
+import {useState} from 'react'
 
 function App() {
+  const [contacts, setcontacts] = useState([])
+  const formSub  = (data) => {
+    setcontacts([...contacts,data]);
+  }
+  // delete contact
+  const deleteContact = (id) =>{
+    let newContact = contacts.filter((singleContact) => {
+      return singleContact.id !== id;
+    })
+    setcontacts(newContact)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Nav/>
+    <Routes>
+      <Route path='/' element={<Home formSub={formSub} contacts={contacts} deleteContact={deleteContact}/>} />
+      <Route path='/Favorites' element={<Favorites/>} />
+      <Route path='*' element={<NotFound/>}/>
+    </Routes>
+    </>
   );
 }
 
